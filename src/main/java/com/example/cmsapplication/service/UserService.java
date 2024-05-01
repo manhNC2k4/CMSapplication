@@ -1,6 +1,5 @@
 package com.example.cmsapplication.service;
 
-import com.example.cmsapplication.DTO.UserDTO;
 import com.example.cmsapplication.model.User;
 import com.example.cmsapplication.repository.UserRepo;
 import org.springframework.stereotype.Service;
@@ -29,18 +28,11 @@ public class UserService {
         return userRepo.findByEmail(email);
     }
 
-    public UserDTO toDo(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(user.getUsername());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setId(user.getId());
-        return userDTO;
-    }
 
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
-    public User getUserByUsername(String username) {
-        return userRepo.findByUsername(username).get();
+    public Optional<User> getUserByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 }

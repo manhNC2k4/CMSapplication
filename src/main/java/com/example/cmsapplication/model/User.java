@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -29,6 +29,10 @@ public class User {
     @CreationTimestamp
     private Date createdAt;
 
+    public User() {
+
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -43,6 +47,12 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
     public String getPassword() {

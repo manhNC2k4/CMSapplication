@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Entity
-@Table(name = "Likes", uniqueConstraints = {
+@Table(name = "likes", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"post_id", "user_id"})
 })
 public class Like {

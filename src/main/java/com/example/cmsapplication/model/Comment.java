@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Entity
-@Table(name = "Comments")
+@Table(name = "comments")
 public class Comment {
 
     @Id

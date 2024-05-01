@@ -21,7 +21,5 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Override
     void deleteById(Long aLong);
 
-    @Override
-    <S extends User> S save(S entity);
 
 }

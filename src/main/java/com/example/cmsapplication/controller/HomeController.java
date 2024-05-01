@@ -37,6 +37,25 @@ public class HomeController {
     }
 
     @GetMapping("/post/{id}")
+    public ResponseEntity<Post> getPostById(@PathVariable long id) {
+        Post post = postService.getPostById(id);
+        if (post == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(post);
+        }
+    }
+    @GetMapping("/post/title/{title}")
+    public ResponseEntity<Post> getPostByTitle(@PathVariable String title) {
+        Post post = postService.getPostByTitle(title);
+        if (post == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(post);
+        }
+    }
+
+    @GetMapping("/post/like/{id}")
     public ResponseEntity<Integer> countLike(@PathVariable Long id) {
         int likeCount = likeService.countLike(id);
         if (likeCount >= 0) {
