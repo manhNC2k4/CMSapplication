@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.JstlView;
 public class WebConfig implements WebMvcConfigurer {
 
     @Value("${app.cors.allowedOrigins}")
-    private String corsAllowedOrigins;
+    private String[] corsAllowedOrigins;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

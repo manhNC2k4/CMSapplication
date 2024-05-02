@@ -3,18 +3,27 @@ package com.example.cmsapplication.config;
 
 import com.example.cmsapplication.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@Primary
 public class CustomerUserDetailService  implements UserDetailsService {
 
     private UserRepo userRepo;
+
+    @Autowired
+    public CustomerUserDetailService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
