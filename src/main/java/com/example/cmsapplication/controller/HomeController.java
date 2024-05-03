@@ -1,5 +1,7 @@
 package com.example.cmsapplication.controller;
 
+import com.example.cmsapplication.DTO.CommentResponse;
+import com.example.cmsapplication.DTO.PostResponse;
 import com.example.cmsapplication.model.Comment;
 import com.example.cmsapplication.model.Post;
 import com.example.cmsapplication.service.CommentService;
@@ -27,8 +29,8 @@ public class HomeController {
     }
 
     @GetMapping("/list-posts")
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> posts = postService.getAllPost();
+    public ResponseEntity<List<PostResponse>> getAllPosts() {
+        List<PostResponse> posts = postService.getPostByStatus(Post.PostStatus.PUBLISHED);
         if (posts.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -36,19 +38,10 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/post/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable long id) {
-        Post post = postService.getPostById(id);
-        if (post == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(post);
-        }
-    }
     @GetMapping("/post/title/{title}")
-    public ResponseEntity<Post> getPostByTitle(@PathVariable String title) {
-        Post post = postService.getPostByTitle(title);
-        if (post == null) {
+    public ResponseEntity<PostResponse> getPostByTitle(@PathVariable String title) {
+        PostResponse post = postService.getPostByTitle(title);
+        if (post == null && post.getStatus().equals(Post.PostStatus.DRAFT)) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(post);
@@ -65,8 +58,8 @@ public class HomeController {
         }
     }
     @GetMapping("/post/comment/{id}")
-    public ResponseEntity<List<Comment>> listComment(@PathVariable Long id) {
-        List<Comment> lists = commentService.getCommentsByPostId(id);
+    public ResponseEntity<List<CommentResponse>> listComment(@PathVariable Long id) {
+        List<CommentResponse> lists = commentService.getCommentsByPostId(id);
         if (lists.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {

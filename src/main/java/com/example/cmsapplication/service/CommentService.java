@@ -1,10 +1,12 @@
 package com.example.cmsapplication.service;
 
+import com.example.cmsapplication.DTO.CommentResponse;
 import com.example.cmsapplication.model.Comment;
 import com.example.cmsapplication.repository.CommentRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -25,7 +27,13 @@ public class CommentService {
         commentRepo.deleteById(id);
     }
 
-    public List<Comment> getCommentsByPostId(Long postId) {
-        return commentRepo.findByPostId(postId);
+    public List<CommentResponse> getCommentsByPostId(Long postId) {
+        List<Comment> comments = commentRepo.findByPostId(postId);
+        return comments.stream().map(this::convertCommentToDTO).collect(Collectors.toList());
+    }
+
+    private CommentResponse convertCommentToDTO(Comment comment) {
+        CommentResponse dto = new CommentResponse(comment.getContent(), comment.getUser().getUsername());
+        return dto;
     }
 }

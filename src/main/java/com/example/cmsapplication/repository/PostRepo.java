@@ -13,6 +13,8 @@ public interface PostRepo extends JpaRepository<Post, Long> {
     @Override
     List<Post> findAll(Sort sort);
 
+    List<Post> findAllByStatus(Post.PostStatus status);
+
     @Override
     Optional<Post> findById(Long aLong);
     Optional<Post> findByTitle(String title);
@@ -20,7 +22,5 @@ public interface PostRepo extends JpaRepository<Post, Long> {
     @Override
     void deleteById(Long aLong);
 
-    @Override
-    <S extends Post> S save(S entity);
 
 }

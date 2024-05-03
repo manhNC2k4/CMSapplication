@@ -25,6 +25,4 @@ public interface CommentRepo extends JpaRepository<Comment, Long> {
     @Query("select c from Comment c where c.post.id = :postId")
     List<Comment> findByPostId(@Param("postId") Long postId);
 
-    @Override
-    <S extends Comment> S save(S entity);
 }

@@ -28,6 +28,16 @@ public class Comment {
     @CreationTimestamp
     private Date createdAt;
 
+    public Comment(User user, Post post, String content) {
+        this.user = user;
+        this.post = post;
+        this.content = content;
+    }
+
+    public Comment() {
+
+    }
+
     public User getUser() {
         return user;
     }

@@ -25,7 +25,7 @@ public class Post {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('DRAFT', 'PUBLISHED')")
-    private PostStatus status = PostStatus.DRAFT;
+    private PostStatus status = PostStatus.PUBLISHED;
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
@@ -34,6 +34,17 @@ public class Post {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
+    public Post(User user, String title, String content, PostStatus status) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.status = status;
+    }
+
+    public Post() {
+
+    }
 
     public Date getUpdatedAt() {
         return updatedAt;
