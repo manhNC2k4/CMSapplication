@@ -33,7 +33,7 @@ public class CommentService {
     }
 
     private CommentResponse convertCommentToDTO(Comment comment) {
-        CommentResponse dto = new CommentResponse(comment.getContent(), comment.getUser().getUsername());
+        CommentResponse dto = new CommentResponse(comment.getContent(), comment.getUser().getUsername(), comment.getId());
         return dto;
     }
 }

@@ -1,9 +1,6 @@
 package com.example.cmsapplication.controller;
 
-import com.example.cmsapplication.DTO.NewCommentDTO;
-import com.example.cmsapplication.DTO.NewLikeDTO;
-import com.example.cmsapplication.DTO.NewPostDTO;
-import com.example.cmsapplication.DTO.PostResponse;
+import com.example.cmsapplication.DTO.*;
 import com.example.cmsapplication.model.Comment;
 import com.example.cmsapplication.model.Like;
 import com.example.cmsapplication.model.Post;
@@ -12,6 +9,7 @@ import com.example.cmsapplication.service.CommentService;
 import com.example.cmsapplication.service.LikeService;
 import com.example.cmsapplication.service.PostService;
 import com.example.cmsapplication.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -92,25 +90,26 @@ public class UserController {
         }
     }
 
-    @GetMapping("/like/find/{userId}/{postId}")
-    public ResponseEntity<Like> findLike(@PathVariable Long userId, @PathVariable Long postId) {
-        Optional<Like> like = likeService.getLike(userId,postId);
-        if (like.isPresent()) {
-            return ResponseEntity.ok(like.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @GetMapping("/like/find/{userId}/{postId}")
+//    public ResponseEntity<Like> findLike(@PathVariable Long userId, @PathVariable Long postId) {
+//        Optional<Like> like = likeService.getLike(userId,postId);
+//        if (like.isPresent()) {
+//            return ResponseEntity.ok(like.get());
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @DeleteMapping("/comment/delete/{id}")
-    public ResponseEntity<Comment> deleteComment(@PathVariable long id) {
-        Comment comment = commentService.getCommentById(id);
-        if (comment == null) {
-            return ResponseEntity.notFound().build();
-        } else {
+    public ResponseEntity<Object> deleteComment(@PathVariable long id) {
+        try {
             commentService.deleteById(id);
-            return ResponseEntity.ok(comment);
+            return new ResponseEntity<>("Deleted comment successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
 
@@ -121,23 +120,37 @@ public class UserController {
             return ResponseEntity.notFound().build();
         } else {
             postService.deletePost(id);
-            return ResponseEntity.ok(post);
+            return ResponseEntity.noContent().build();
         }
     }
     @PutMapping("/post/update")
-    public ResponseEntity<Post> updatePost(@RequestBody Post post) {
-        Post updatedPost = postService.updatePost(post);
-        if (updatedPost == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(updatedPost);
+    public ResponseEntity<Object> updatePost(@RequestBody UpdatePostDTO postDTO) {
+        try {
+            Post existingPost = postService.getPostById(postDTO.getId());
+            if (existingPost == null) {
+                return new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
+            }
+            existingPost.setTitle(postDTO.getTitle());
+            existingPost.setContent(postDTO.getContent());
+            existingPost.setStatus(postDTO.getStatus());
+            postService.updatePost(existingPost);
+            return new ResponseEntity<>("Updated post successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/like/delete/{id}")
     public ResponseEntity<Like> deleteLike(@PathVariable Long id) {
-        likeService.deleteLike(id);
-        return ResponseEntity.ok().build();
+        try {
+            likeService.deleteLike(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 }
