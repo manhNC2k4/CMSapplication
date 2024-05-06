@@ -1,7 +1,11 @@
 package com.example.cmsapplication.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class LoginRequest {
     @JsonProperty
     private String username;
@@ -9,24 +13,5 @@ public class LoginRequest {
     @JsonProperty
     private String password;
 
-    public LoginRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
